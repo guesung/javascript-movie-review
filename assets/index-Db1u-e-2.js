@@ -47,32 +47,30 @@ const store = {
   movies: [],
   searchKeyword: ""
 };
+const MAX_MOVIE_PAGE = 500;
+const DEFAULT_BACK_DROP_URL = "https://media.themoviedb.org/t/p/w440_and_h660_face/";
+const DOMAIN_TMDB = "https://api.themoviedb.org";
+const options = {
+  method: "GET",
+  headers: {
+    accept: "application/json",
+    Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxNmEwYTdiNzE4ODA4YTVmYTJjZWMxNGYwOTNjZDZjZCIsIm5iZiI6MTc0MjI2MzAzMS41MTYsInN1YiI6IjY3ZDhkMmY3NGYwMjQ2ZGUzOWVlOWZlYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wYazrK1XQKvh5qGf8BQcnljLKMMRTdUGBv6KcRxAvHw"}`
+  }
+};
 async function fetchWithErrorHandling(url) {
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxNmEwYTdiNzE4ODA4YTVmYTJjZWMxNGYwOTNjZDZjZCIsIm5iZiI6MTc0MjI2MzAzMS41MTYsInN1YiI6IjY3ZDhkMmY3NGYwMjQ2ZGUzOWVlOWZlYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wYazrK1XQKvh5qGf8BQcnljLKMMRTdUGBv6KcRxAvHw"}`
-    }
-  };
   return fetch(url, options).then((res) => {
     if (res.ok) return res.json();
     throw new Error(String(res.status));
   });
 }
 async function getMovies({ page }) {
-  const url = `https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=${page}`;
+  const url = `${DOMAIN_TMDB}/3/movie/popular?language=ko-KR&page=${page}`;
   return fetchWithErrorHandling(url);
 }
-async function getMovieByName({
-  name,
-  page
-}) {
-  const url = `https://api.themoviedb.org/3/search/movie?query=${name}&include_adult=false&language=ko-KR&page=${page}`;
+async function getMovieByName({ name, page }) {
+  const url = `${DOMAIN_TMDB}/3/search/movie?query=${name}&include_adult=false&language=ko-KR&page=${page}`;
   return fetchWithErrorHandling(url);
 }
-const MAX_MOVIE_PAGE = 500;
-const DEFAULT_BACK_DROP_URL = "https://media.themoviedb.org/t/p/w440_and_h660_face/";
 function MovieList(moviesResult) {
   const $ul2 = document.querySelector(".thumbnail-list");
   moviesResult.forEach((movieResult) => {
@@ -147,7 +145,9 @@ const $ul = document.querySelector(".thumbnail-list");
 const $error = document.querySelector(".error");
 const $h2 = $error == null ? void 0 : $error.querySelector("h2");
 const changeHeaderBackground = () => {
-  const $backgroundContainer = document.querySelector(".background-container");
+  const $backgroundContainer = document.querySelector(
+    ".background-container"
+  );
   if (store.searchKeyword === "") {
     const backgroundImage = store.movies[0].backdrop_path ? `${DEFAULT_BACK_DROP_URL}${store.movies[0].backdrop_path}` : "./images/default_thumbnail.jpeg";
     $backgroundContainer.style.backgroundImage = `url(${backgroundImage})`;
