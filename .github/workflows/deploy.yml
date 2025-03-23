@@ -39,13 +39,13 @@ jobs:
       - name: Type Check
         run: npm run type-check
 
-      - name: Build
-        run: npm run build
-
       - name: setting environment variables
         run: |
           echo "${{ secrets.VITE_BASE_URL }}" >> .env
           echo WEB_URL=${{ secrets.VITE_TMDB_TOKEN }} >> .env
+
+      - name: Build
+        run: npm run build
 
       - name: E2E
         uses: cypress-io/github-action@v6
