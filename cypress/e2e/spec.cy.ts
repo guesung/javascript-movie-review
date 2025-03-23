@@ -7,6 +7,7 @@ describe('E2E테스트', () => {
     it('사용자가 영화 목록 20개를 볼 수 있다.', () => {
       cy.get('.thumbnail-list > li').should('have.length', 20);
     });
+
     it('사용자가 더 보기를 누르면 다음 목록을 보여준다.', () => {
       cy.get('[data-action="show-more"]').click();
       cy.get('.thumbnail-list > li').should('have.length', 40);
