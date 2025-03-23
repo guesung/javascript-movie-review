@@ -51,7 +51,7 @@ jobs:
           start: npm run preview
 
       - name: Upload screenshots
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress-screenshots
