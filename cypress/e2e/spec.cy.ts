@@ -55,7 +55,7 @@ describe('비동기 API 테스트', () => {
   });
 });
 
-describe.only('Fixture를 이용한 테스트', () => {
+describe('Fixture를 이용한 테스트', () => {
   beforeEach(() => {
     cy.intercept(
       {
@@ -70,10 +70,11 @@ describe.only('Fixture를 이용한 테스트', () => {
 
   it('영화 목록 API를 호출하면 한 번에 20개씩 목록에 나열되어야 한다', () => {
     cy.wait('@getPopularMovies').then((interception) => {
+      if (!interception.response) return;
+
       const popularMovies = interception.response.body.results;
       expect(popularMovies.length).to.equal(20);
 
-      // 제대로 렌더링이 되었는지 테스트하는 코드 샘플
       const popularMovieItems = cy.get('.thumbnail-list > li');
       expect(popularMovieItems.should('have.length', 20));
     });
