@@ -8,5 +8,8 @@ export default defineConfig({
     experimentalStudio: true,
     baseUrl: process.env.VITE_BASE_URL ?? 'http://localhost:5173',
     video: true,
+    env: {
+      VITE_TMDB_TOKEN: process.env.VITE_TMDB_TOKEN,
+    },
   },
 });

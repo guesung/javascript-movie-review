@@ -70,6 +70,7 @@ export default class App extends Component<null, AppState> {
           page,
         });
       else moviesResponse = await MovieApiClient.getAll({ page });
+      console.log(moviesResponse);
     } catch (error) {
       if (isError(error)) this.setState({ error });
       else if (isString(error)) this.setState({ error: new Error(error) });
