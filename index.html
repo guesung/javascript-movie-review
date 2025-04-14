@@ -1,32 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Movie Review App</title>
-    <link rel="stylesheet" href="/src/styles/index.css" />
-  </head>
-  <body>
-    <div id="app">
-      <header class="header">
-        <h1>Movie Review App</h1>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영화 리뷰</title>
+    <link rel="stylesheet" href="src/styles/index.css">
+</head>
+<body>
+    <header>
         <div class="search-container">
-          <input type="text" id="searchInput" placeholder="Search movies..." />
-          <button id="searchButton">Search</button>
+            <input type="text" id="searchInput" placeholder="영화 제목을 입력하세요">
+            <button id="searchButton">검색</button>
         </div>
-      </header>
+    </header>
 
-      <main>
+    <main>
         <div id="movieList" class="movie-list"></div>
-      </main>
-
-      <div id="movieModal" class="modal">
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <div id="movieDetails"></div>
+        <div class="skeleton-loader" id="skeletonLoader">
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
         </div>
-      </div>
+    </main>
+
+    <div id="movieModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <img src="" alt="" class="modal-poster" id="modalPoster">
+                <div class="modal-info">
+                    <h2 id="modalTitle"></h2>
+                    <div class="rating-container">
+                        <div class="stars">
+                            <span class="star" data-rating="2">★</span>
+                            <span class="star" data-rating="4">★</span>
+                            <span class="star" data-rating="6">★</span>
+                            <span class="star" data-rating="8">★</span>
+                            <span class="star" data-rating="10">★</span>
+                        </div>
+                        <div class="rating-text" id="ratingText">평가하기</div>
+                    </div>
+                    <p id="modalOverview" class="overview"></p>
+                </div>
+            </div>
+            <div class="cast">
+                <h3>출연진</h3>
+                <div class="cast-list" id="castList"></div>
+            </div>
+            <div class="reviews">
+                <h3>리뷰</h3>
+                <div id="reviewsList"></div>
+            </div>
+        </div>
     </div>
-    <script type="module" src="/src/js/main.js"></script>
-  </body>
+
+    <script src="src/js/main.js"></script>
+</body>
 </html>
