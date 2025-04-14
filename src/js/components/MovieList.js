@@ -27,6 +27,7 @@ export class MovieList {
 
     this.loading = true;
     this.showSkeletonLoader();
+    this.hideError(); // 이전 에러 메시지 제거
 
     try {
       const response = await movieAPI.fetchPopularMovies(this.page);
@@ -35,7 +36,7 @@ export class MovieList {
       this.page++;
       this.render();
     } catch (error) {
-      this.showError('영화 목록을 불러오는데 실패했습니다.');
+      this.showError(error.message || '영화 목록을 불러오는데 실패했습니다. 잠시 후 다시 시도해주세요.');
     } finally {
       this.loading = false;
       this.hideSkeletonLoader();
@@ -67,10 +68,31 @@ export class MovieList {
   }
 
   showError(message) {
+    // 기존 에러 메시지 제거
+    this.hideError();
+    
     const errorElement = document.createElement('div');
     errorElement.className = 'error-message';
-    errorElement.textContent = message;
+    errorElement.innerHTML = `
+      <p>${message}</p>
+      <button class="retry-button">다시 시도</button>
+    `;
+    
+    // 재시도 버튼 이벤트 리스너 추가
+    const retryButton = errorElement.querySelector('.retry-button');
+    retryButton.addEventListener('click', () => {
+      this.hideError();
+      this.loadMoreMovies();
+    });
+    
     this.container.appendChild(errorElement);
+  }
+
+  hideError() {
+    const errorElement = this.container.querySelector('.error-message');
+    if (errorElement) {
+      errorElement.remove();
+    }
   }
 
   render() {
@@ -82,10 +104,11 @@ export class MovieList {
             src="${movieAPI.getImageUrl(movie.poster_path, 'medium', 'poster')}"
             alt="${movie.title}"
             loading="lazy"
+            onerror="this.src='/images/no-image.png'"
           />
           <div class="item-desc">
             <p class="rate">
-              <img src="./images/star_empty.png" class="star" />
+              <img src="/images/star_empty.png" class="star" />
               <span>${movie.vote_average.toFixed(1)}</span>
             </p>
             <strong>${movie.title}</strong>
